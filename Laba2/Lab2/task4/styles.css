@@ -1,0 +1,34 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+}
+
+.menu {
+    width: 250px;
+    background-color: #f0f0f0;
+    padding: 20px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: move;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.menu label {
+    display: block;
+    margin-bottom: 15px;
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.block {
+    background-color: #4682B4;
+    transition: all 0.3s ease;
+}
