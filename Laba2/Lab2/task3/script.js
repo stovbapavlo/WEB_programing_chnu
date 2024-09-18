@@ -1,5 +1,5 @@
 document.getElementById('input').addEventListener('input', function () {
-    const input = this.value.replace(/[^01]/g, ''); // Залишаємо тільки нулі та одиниці
+    const input = this.value.replace(/[^01]/g, '');
     const grid = document.getElementById('grid');
     grid.innerHTML = '';
 
