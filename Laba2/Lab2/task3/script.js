@@ -3,7 +3,7 @@ document.getElementById('input').addEventListener('input', function () {
     const grid = document.getElementById('grid');
     grid.innerHTML = '';
 
-    const maxSize = 250;
+    const maxSize = 50;
 
     for (let i = 0; i < Math.min(input.length, maxSize); i++) {
         const square = document.createElement('div');
