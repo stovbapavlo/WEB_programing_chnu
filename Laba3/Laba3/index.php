@@ -1,21 +1,16 @@
 <?php
-// Відкриваємо файл для читання
 $file = fopen('oblinfo.txt', 'r');
 
-// Перевіряємо, чи вдалося відкрити файл
 if ($file) {
     $regions = [];
 
-    // Читаємо файл за допомогою циклу for
     for ($i = 0; !feof($file); $i++) {
-        $regionName = trim(fgets($file)); // Читаємо назву області
-        $population = (int)trim(fgets($file)); // Читаємо населення
-        $universities = (int)trim(fgets($file)); // Читаємо кількість вузів
+        $regionName = trim(fgets($file));
+        $population = (int)trim(fgets($file));
+        $universities = (int)trim(fgets($file));
 
-        // Рахуємо число вузів на 100 тис. населення
         $universitiesPer100k = ($population > 0) ? round(($universities / $population) * 100, 2) : 0;
 
-        // Зберігаємо дані про область
         $regions[] = [
             'name' => $regionName,
             'population' => $population,
@@ -24,7 +19,6 @@ if ($file) {
         ];
     }
 
-    // Закриваємо файл після завершення читання
     fclose($file);
 }
 ?>
