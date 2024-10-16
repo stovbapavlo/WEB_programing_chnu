@@ -16,10 +16,10 @@
         $found = false;
         $result = [];
 
-        // Шукаємо обраний напрямок
         for ($i = 0; $i < count($lines); $i++) {
             if ($lines[$i] == $selected_direction) {
                 $found = true;
+
                 $num_universities = intval($lines[$i + 1]);
 
                 for ($j = 0; $j < $num_universities; $j++) {
@@ -46,7 +46,7 @@
                 echo '<td>' . $row['average_score'] . '</td>';
                 echo '<td>' . $row['budget_students'] . '</td>';
                 echo '<td>' . ($row['contract_students'] < 0 ? abs($row['contract_students']) : '-') . '</td>';
-                echo '<td>' . ($row['contract_students'] >= 0 ? $row['contract_students'] : '-') . '</td>';
+                echo '<td>' . ($row['contract_students'] >= 1 ? $row['contract_students'] : '-') . '</td>';
                 echo '<td>' . $row['university_name'] . '</td>';
                 echo '</tr>';
                 $row_number++;
