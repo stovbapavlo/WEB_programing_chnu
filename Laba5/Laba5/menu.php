@@ -1,25 +1,11 @@
 <?php
-// Читання файлу oblinfo.txt
-$filename = "oblinfo.txt";
-if (file_exists($filename)) {
-    $file = fopen($filename, "r");
-    $oblasts = [];
+// Підключення файлу з функціями
+require_once 'functions.php';
 
-    // Читання даних по кожній області
-    while (!feof($file)) {
-        $oblast_name = trim(fgets($file)); // Назва області
-        $population = trim(fgets($file));  // Населення
-        $universities = trim(fgets($file)); // Кількість ВНЗ
-        if ($oblast_name && $population && $universities) {
-            $oblasts[] = [
-                'name' => $oblast_name,
-                'population' => $population,
-                'universities' => $universities
-            ];
-        }
-    }
-    fclose($file);
-} else {
+$filename = "oblinfo.txt";
+$oblasts = readOblastsFromFile($filename);
+
+if ($oblasts === false) {
     echo "Файл обласної інформації не знайдено.";
     exit;
 }
@@ -28,8 +14,8 @@ if (file_exists($filename)) {
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
     <title>Вибір області</title>
 </head>
 <body>
