@@ -1,25 +1,11 @@
 <?php
-// Читання файлу oblinfo.txt
-$filename = "oblinfo.txt";
-if (file_exists($filename)) {
-    $file = fopen($filename, "r");
-    $oblasts = [];
+// Підключення файлу з функціями
+require_once 'functions.php';
 
-    // Читання даних по кожній області
-    while (!feof($file)) {
-        $oblast_name = trim(fgets($file)); // Назва області
-        $population = trim(fgets($file));  // Населення
-        $universities = trim(fgets($file)); // Кількість ВНЗ
-        if ($oblast_name && $population && $universities) {
-            $oblasts[] = [
-                'name' => $oblast_name,
-                'population' => $population,
-                'universities' => $universities
-            ];
-        }
-    }
-    fclose($file);
-} else {
+$filename = "oblinfo.txt";
+$oblasts = readOblastsFromFile($filename);
+
+if ($oblasts === false) {
     echo "Файл обласної інформації не знайдено.";
     exit;
 }
@@ -29,23 +15,21 @@ if (file_exists($filename)) {
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
     <title>Інформація про область</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Підключення CSS файлу -->
 </head>
 <body>
 
 <?php
-// Отримуємо обрану область
 if (isset($_POST['oblast_id'])) {
     $oblast_id = intval($_POST['oblast_id']);
+
     if (isset($oblasts[$oblast_id])) {
         $oblast = $oblasts[$oblast_id];
-
-        // Обчислення кількості ВНЗ на 100 тис. населення
         $universities_per_100k = ($oblast['universities'] / $oblast['population']) * 100;
 
         echo "<h1>Інформація про область: {$oblast['name']}</h1>";
-        echo "<table border='1' cellpadding='10' cellspacing='0'>
+        echo "<table>
                 <tr>
                     <th>Область</th>
                     <th>Населення, тис.</th>
