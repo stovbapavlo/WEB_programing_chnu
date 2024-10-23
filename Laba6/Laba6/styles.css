@@ -1,0 +1,47 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+}
+.weather-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    width: 300px;
+}
+h2 {
+    color: #333;
+}
+p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+h3 {
+    margin-top: 20px;
+}
+.button-container {
+    margin-top: 20px;
+}
+.city-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.city-button:hover {
+    background-color: #2980b9;
+}
+.city-button:active {
+    background-color: #1e6f93;
+}
