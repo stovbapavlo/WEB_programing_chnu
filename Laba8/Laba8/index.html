@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 200px;
+        }
+    </style>
+    <title>Пошук книг</title>
+    <script>
+        // Функція для відправлення запиту на сервер при кожному натисканні клавіші
+        function searchBooks() {
+            var query = document.getElementById('search').value;
+
+            // Якщо запит порожній, очищаємо поле результату
+            if (query.trim() === '') {
+                document.getElementById('results').value = '';
+                return;
+            }
+
+            // Створюємо XMLHttpRequest об'єкт
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'search.php?search=' + encodeURIComponent(query), true);
+
+            // Обробник події для отримання відповіді від сервера
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    // Відображаємо результат у полі результату
+                    document.getElementById('results').value = xhr.responseText;
+                } else {
+                    document.getElementById('results').value = 'Помилка отримання результату!';
+                }
+            };
+
+            // Надсилаємо запит
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+
+<h1>Пошук книг</h1>
+
+<!-- Поле для введення пошукового запиту -->
+<label for="search">Введіть назву книги або автора:</label>
+<input type="text" id="search" onkeypress="searchBooks()" placeholder="Почніть вводити запит">
+
+<br><br>
+
+<!-- Поле для виведення результатів -->
+<label for="results">Результати пошуку:</label>
+<textarea id="results" rows="10" cols="50" readonly></textarea>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 <?php
 function get_weather_data($city_id) {
     if ($city_id == '4944') {
-        $url = 'http://www.gismeteo.ua/city/hourly/10708/';
+        $url = 'http://www.gismeteo.ua/city/hourly/4944/';
     } else {
         $url = 'http://www.gismeteo.ua/city/hourly/5053/';
     }
