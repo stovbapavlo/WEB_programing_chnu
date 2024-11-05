@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пошук товарів</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#loading').hide(); // Ховаємо індикатор завантаження спочатку
+
+            $('#search-form').on('submit', function (e) {
+                e.preventDefault(); // Зупиняємо стандартну поведінку форми
+
+                const searchQuery = $('#search-input').val(); // Отримуємо пошуковий запит з поля
+                $('#results').empty(); // Очищаємо попередні результати
+                $('#loading').show(); // Показуємо індикатор завантаження
+
+                $.ajax({
+                    url: '/search', // URL для AJAX запиту
+                    type: 'GET',
+                    data: { search: searchQuery }, // Пошуковий запит як параметр
+                    success: function (data) {
+                        $('#loading').hide(); // Ховаємо індикатор після отримання результатів
+
+                        if (data.length > 0) {
+                            data.forEach(item => {
+                                $('#results').append(`
+                                    <li>
+                                        <a href="${item.link}">${item.title}</a> - ${item.price} грн
+                                    </li>
+                                `);
+                            });
+                        } else {
+                            $('#results').append('<li>Нічого не знайдено</li>');
+                        }
+                    },
+                    error: function () {
+                        $('#loading').hide(); // Ховаємо індикатор у разі помилки
+                        $('#results').append('<li>Помилка отримання даних</li>');
+                    }
+                });
+            });
+        });
+    </script>
+    <style>
+        #loading {
+            font-size: 18px;
+            font-weight: bold;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<h1>Пошук товарів на Rozetka</h1>
+
+<form id="search-form">
+    <input type="text" id="search-input" placeholder="Введіть пошуковий запит">
+    <button type="submit">Шукати</button>
+</form>
+
+<!-- Індикатор завантаження -->
+<p id="loading">Завантаження...</p>
+
+<ul id="results">
+    <!-- Результати пошуку будуть додані тут -->
+</ul>
+</body>
+</html>
