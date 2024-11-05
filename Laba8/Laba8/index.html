@@ -1,71 +1,72 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            box-sizing: border-box;
-        }
-        textarea {
-            height: 200px;
-        }
-    </style>
-    <title>Пошук книг</title>
-    <script>
-        // Функція для відправлення запиту на сервер при кожному натисканні клавіші
-        function searchBooks() {
-            var query = document.getElementById('search').value;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пошук товарів на Rozetka</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, #results {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    #results {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  </style>
+  <script>
+    // Функція для відправки запиту на сервер і отримання результатів
+    function searchProducts() {
+      var query = document.getElementById('search').value;
 
-            // Якщо запит порожній, очищаємо поле результату
-            if (query.trim() === '') {
-                document.getElementById('results').value = '';
-                return;
-            }
+      // Перевірка, чи запит не порожній
+      if (query.trim() === '') {
+        document.getElementById('results').innerHTML = 'Введіть запит для пошуку.';
+        return;
+      }
 
-            // Створюємо XMLHttpRequest об'єкт
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'search.php?search=' + encodeURIComponent(query), true);
+      // Створюємо XMLHttpRequest об'єкт
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'search.php?query=' + encodeURIComponent(query), true);
 
-            // Обробник події для отримання відповіді від сервера
-            xhr.onload = function() {
-                if (xhr.status == 200) {
-                    // Відображаємо результат у полі результату
-                    document.getElementById('results').value = xhr.responseText;
-                } else {
-                    document.getElementById('results').value = 'Помилка отримання результату!';
-                }
-            };
-
-            // Надсилаємо запит
-            xhr.send();
+      // Обробник події для отримання відповіді від сервера
+      xhr.onload = function() {
+        if (xhr.status == 200) {
+          // Виводимо результат у блоці results
+          document.getElementById('results').innerHTML = xhr.responseText;
+        } else {
+          document.getElementById('results').innerHTML = 'Помилка отримання результату!';
         }
-    </script>
+      };
+
+      // Відправляємо запит
+      xhr.send();
+    }
+  </script>
 </head>
 <body>
 
-<h1>Пошук книг</h1>
+<h1>Пошук товарів на Rozetka</h1>
 
 <!-- Поле для введення пошукового запиту -->
-<label for="search">Введіть назву книги або автора:</label>
-<input type="text" id="search" onkeypress="searchBooks()" placeholder="Почніть вводити запит">
+<label for="search">Введіть назву товару:</label>
+<input type="text" id="search" onkeyup="searchProducts()" placeholder="Наприклад, смартфон">
 
-<br><br>
-
-<!-- Поле для виведення результатів -->
-<label for="results">Результати пошуку:</label>
-<textarea id="results" rows="10" cols="50" readonly></textarea>
+<!-- Блок для виведення результатів -->
+<div id="results">
+  Введіть запит для пошуку.
+</div>
 
 </body>
 </html>
