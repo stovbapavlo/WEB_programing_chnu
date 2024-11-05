@@ -1,52 +1,34 @@
 <?php
-// Перевіряємо, чи переданий параметр "query" у GET-запиті
-if (isset($_GET['query'])) {
-    // Отримуємо пошуковий запит
-    $query = $_GET['query'];
-
-    // Формуємо URL сторінки пошуку на Rozetka з динамічним пошуком
-    $search_url = "https://rozetka.com.ua/ua/mobile-phones/c80003/preset=smartfon/#search_text=" . urlencode($query);
-
-    // Ініціалізація cURL
-    $ch = curl_init();
-
-    // Налаштування cURL
-    curl_setopt($ch, CURLOPT_URL, $search_url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-
-    // Виконання запиту
-    $response = curl_exec($ch);
-
-    // Перевірка на помилки
+// Спочатку перевіряємо, чи є переданий пошуковий запит
+$query = isset($_GET['search']) ? $_GET['search'] : '';
+if (!empty($query)) {
+    // Формуємо URL для запиту до Open Library
+    $search_url = "https://openlibrary.org/search.json?q=" . urlencode($query);
+    // Використовуємо file_get_contents для отримання результатів у форматі JSON
+    $response = file_get_contents($search_url);
+    // Якщо результат порожній, виводимо помилку
     if ($response === FALSE) {
-        echo "Не вдалося отримати дані!";
-        curl_close($ch);
+        echo "Не вдалося отримати результат пошуку!";
         exit;
     }
-
-    // Закриття cURL
-    curl_close($ch);
-
-    // Використовуємо DOMDocument для парсингу HTML
-    $dom = new DOMDocument();
-    libxml_use_internal_errors(true);
-    $dom->loadHTML($response);
-    libxml_clear_errors();
-
-    // Використовуємо XPath для пошуку блоку з товарами
-    $xpath = new DOMXPath($dom);
-    $nodes = $xpath->query("//*[contains(@class, 'catalog-grid')]");
-
-    // Виводимо результати
-    if ($nodes->length > 0) {
-        foreach ($nodes as $node) {
-            echo $dom->saveHTML($node);
-        }
-    } else {
-        echo "Товари за вашим запитом не знайдено.";
+    // Декодуємо JSON-відповідь
+    $data = json_decode($response, true);
+    // Перевіряємо, чи є результати пошуку
+    if (!isset($data['docs']) || empty($data['docs'])) {
+        echo "Результати не знайдено для запиту: " . htmlspecialchars($query);
+        exit;
     }
+    // Формуємо результат у текстовому форматі
+    $result = '';
+    foreach ($data['docs'] as $book) {
+        $title = isset($book['title']) ? $book['title'] : 'Без назви';
+        $author = isset($book['author_name'][0]) ? $book['author_name'][0] : 'Невідомий автор';
+        $result .= "<p><strong>Назва:</strong> " . htmlspecialchars($title) . "<br>";
+        $result .= "<strong>Автор:</strong> " . htmlspecialchars($author) . "</p>";
+    }
+    // Виводимо результат
+    echo $result;
 } else {
-    echo "Будь ласка, введіть запит для пошуку.";
+    echo "Введіть запит для пошуку.";
 }
 ?>

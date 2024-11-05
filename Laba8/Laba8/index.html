@@ -3,70 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Пошук товарів на Rozetka</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-    input, #results {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      box-sizing: border-box;
-    }
-    #results {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-top: 10px;
-    }
-  </style>
-  <script>
-    // Функція для відправки запиту на сервер і отримання результатів
-    function searchProducts() {
-      var query = document.getElementById('search').value;
-
-      // Перевірка, чи запит не порожній
-      if (query.trim() === '') {
-        document.getElementById('results').innerHTML = 'Введіть запит для пошуку.';
-        return;
-      }
-
-      // Створюємо XMLHttpRequest об'єкт
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', 'search.php?query=' + encodeURIComponent(query), true);
-
-      // Обробник події для отримання відповіді від сервера
-      xhr.onload = function() {
-        if (xhr.status == 200) {
-          // Виводимо результат у блоці results
-          document.getElementById('results').innerHTML = xhr.responseText;
-        } else {
-          document.getElementById('results').innerHTML = 'Помилка отримання результату!';
-        }
-      };
-
-      // Відправляємо запит
-      xhr.send();
-    }
-  </script>
+  <link rel="stylesheet" href="style.css">
+  <title>Пошук книг</title>
 </head>
 <body>
+<h1>Пошук книг</h1>
 
-<h1>Пошук товарів на Rozetka</h1>
-
-<!-- Поле для введення пошукового запиту -->
-<label for="search">Введіть назву товару:</label>
-<input type="text" id="search" onkeyup="searchProducts()" placeholder="Наприклад, смартфон">
-
-<!-- Блок для виведення результатів -->
-<div id="results">
-  Введіть запит для пошуку.
+<div class="search">
+  <label for="search">Введіть назву книги або автора:</label>
+  <input type="text" id="search" placeholder="Введіть запит">
+  <button onclick="searchBooks()">Пошук</button>
 </div>
 
+<label for="results">Результати пошуку:</label>
+
+<div id="loading">Завантаження...</div>
+
+<div id="results">
+
+  <div class="result-item">
+  </div>
+</div>
+
+
+<script src="script.js"></script>
 </body>
 </html>
